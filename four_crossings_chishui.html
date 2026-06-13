@@ -1,0 +1,2029 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>四渡赤水 - 红军长征突围战</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', 'Source Han Sans SC', serif;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 25%, #fdcb6e 50%, #e17055 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #2d3436;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle at 20% 40%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 60%, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px 40px;
+            background: linear-gradient(135deg, #ff7675 0%, #fd79a8 50%, #fdcb6e 100%);
+            border-radius: 25px;
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.1),
+                inset 0 2px 5px rgba(255, 255, 255, 0.5);
+            color: #2d3436;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+        }
+
+        h1 {
+            font-size: 3.2em;
+            margin-bottom: 8px;
+            text-shadow:
+                2px 2px 4px rgba(0,0,0,0.1),
+                0 0 10px rgba(255, 255, 255, 0.5);
+            letter-spacing: 6px;
+            font-weight: bold;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(45deg, #2d3436, #636e72);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            color: #2d3436;
+        }
+
+        .game-container {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .board-wrapper {
+            flex: 1;
+            min-width: 600px;
+            max-width: 750px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-panel {
+            flex: 0 0 320px;
+            min-height: 600px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.1),
+                inset 0 1px 3px rgba(0,0,0,0.05);
+            border: 3px solid #e17055;
+        }
+
+        .map-info {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-size: 0.95em;
+        }
+
+        .map-direction {
+            font-weight: bold;
+            color: #8b4513;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(13, 52px);
+            grid-template-rows: repeat(13, 52px);
+            gap: 3px;
+            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow:
+                0 15px 40px rgba(0,0,0,0.1),
+                inset 0 2px 5px rgba(0,0,0,0.05);
+            margin: 0 auto;
+            border: 3px solid #e17055;
+            position: relative;
+        }
+
+        .cell {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            border: 2px solid transparent;
+            box-shadow:
+                inset 0 1px 3px rgba(0,0,0,0.05),
+                0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .cell:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow:
+                0 6px 15px rgba(0,0,0,0.15),
+                0 0 15px rgba(253, 203, 110, 0.3),
+                inset 0 1px 3px rgba(0,0,0,0.05);
+            z-index: 10;
+            border-color: rgba(253, 203, 110, 0.5);
+            background: linear-gradient(135deg, #fff9e6 0%, #fff 100%);
+        }
+
+        .cell:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        /* 地形样式 */
+        .cell.mountain {
+            background: linear-gradient(135deg, #5a4a3a 0%, #7a6a5a 50%, #5a4a3a 100%);
+            cursor: not-allowed;
+        }
+
+        .cell.mountain::after {
+            content: '⛰️';
+            font-size: 1.6em;
+            opacity: 0.7;
+        }
+
+        .cell.river {
+            background: linear-gradient(180deg, #1e3c72 0%, #2a5298 25%, #1e3c72 50%, #2a5298 75%, #1e3c72 100%);
+            animation: riverFlow 4s ease-in-out infinite;
+            box-shadow:
+                inset 0 0 20px rgba(255, 255, 255, 0.2),
+                0 0 15px rgba(42, 82, 152, 0.5);
+        }
+
+        @keyframes riverFlow {
+            0%, 100% {
+                background-position: 0% 0%;
+                box-shadow:
+                    inset 0 0 20px rgba(255, 255, 255, 0.2),
+                    0 0 15px rgba(42, 82, 152, 0.5);
+            }
+            50% {
+                background-position: 0% 100%;
+                box-shadow:
+                    inset 0 0 25px rgba(255, 255, 255, 0.3),
+                    0 0 25px rgba(42, 82, 152, 0.8);
+            }
+        }
+
+        .cell.river::after {
+            content: '🌊';
+            font-size: 1.8em;
+            opacity: 0.8;
+            color: #87ceeb;
+            filter: drop-shadow(0 0 3px rgba(135, 206, 235, 0.8));
+            animation: waterWave 2s ease-in-out infinite;
+        }
+
+        @keyframes waterWave {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .cell.ford {
+            background: linear-gradient(180deg, #ffd700 0%, #ffed4e 25%, #ffd700 50%, #ffed4e 75%, #ffd700 100%);
+            border: 3px solid #ff6b00;
+            box-shadow:
+                0 0 20px rgba(255, 215, 0, 0.8),
+                0 0 40px rgba(255, 215, 0, 0.4),
+                inset 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: fordGlow 2s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cell.ford::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            animation: fordShine 3s linear infinite;
+        }
+
+        @keyframes fordGlow {
+            0%, 100% {
+                box-shadow:
+                    0 0 20px rgba(255, 215, 0, 0.8),
+                    0 0 40px rgba(255, 215, 0, 0.4),
+                    inset 0 0 10px rgba(255, 255, 255, 0.5);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow:
+                    0 0 30px rgba(255, 215, 0, 1),
+                    0 0 60px rgba(255, 215, 0, 0.6),
+                    inset 0 0 15px rgba(255, 255, 255, 0.7);
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes fordShine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .cell.ford::after {
+            content: '⛴';
+            font-size: 1.8em;
+            filter: drop-shadow(0 0 5px rgba(255, 107, 0, 0.8));
+            z-index: 1;
+        }
+
+        .cell.town {
+            background: linear-gradient(135deg, #c9a876 0%, #b89560 50%, #c9a876 100%);
+            border: 2px solid #8b7355;
+        }
+
+        .cell.important-town {
+            background: linear-gradient(135deg, #ffd700 0%, #ff9500 100%);
+            border: 3px solid #ff6b00;
+            box-shadow: 0 0 18px rgba(255, 149, 0, 0.5);
+        }
+
+        .cell.victory-sichuan {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 50%, #1b5e20 100%);
+            animation: victoryPulse 2s ease-in-out infinite;
+            border: 3px solid #00c853;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cell.victory-sichuan::before {
+            content: '🎋';
+            position: absolute;
+            font-size: 2em;
+            opacity: 0.3;
+            animation: sway 4s ease-in-out infinite;
+        }
+
+        .cell.victory-yunnan {
+            background: linear-gradient(135deg, #ff5252 0%, #d32f2f 50%, #b71c1c 100%);
+            animation: victoryPulse 2s ease-in-out infinite;
+            border: 3px solid #ff1744;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cell.victory-yunnan::before {
+            content: '🌺';
+            position: absolute;
+            font-size: 2em;
+            opacity: 0.3;
+            animation: sway 4s ease-in-out infinite reverse;
+        }
+
+        @keyframes victoryPulse {
+            0%, 100% {
+                box-shadow:
+                    0 0 15px rgba(255, 215, 0, 0.6),
+                    0 0 30px rgba(255, 215, 0, 0.3);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow:
+                    0 0 25px rgba(255, 215, 0, 0.9),
+                    0 0 50px rgba(255, 215, 0, 0.5);
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: translateX(0) rotate(-5deg); }
+            50% { transform: translateX(5px) rotate(5deg); }
+        }
+
+        /* 单位样式 */
+        .unit {
+            font-size: 2em;
+            z-index: 10;
+            filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.7));
+            transition: all 0.3s ease;
+        }
+
+        .red-army {
+            animation: redGlow 2s ease-in-out infinite, pulseUnit 3s ease-in-out infinite;
+        }
+
+        @keyframes redGlow {
+            0%, 100% {
+                filter:
+                    drop-shadow(0 0 8px #ff0000),
+                    drop-shadow(0 0 16px rgba(255, 0, 0, 0.5));
+            }
+            50% {
+                filter:
+                    drop-shadow(0 0 15px #ff0000),
+                    drop-shadow(0 0 30px rgba(255, 0, 0, 0.8));
+            }
+        }
+
+        @keyframes pulseUnit {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .white-army {
+            animation: whiteGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes whiteGlow {
+            0%, 100% {
+                filter:
+                    drop-shadow(0 0 6px #4169e1),
+                    drop-shadow(0 0 12px rgba(65, 105, 225, 0.5));
+            }
+            50% {
+                filter:
+                    drop-shadow(0 0 10px #4169e1),
+                    drop-shadow(0 0 20px rgba(65, 105, 225, 0.7));
+            }
+        }
+
+        .location-name {
+            position: absolute;
+            bottom: 1px;
+            font-size: 0.6em;
+            color: #1a1a1a;
+            text-shadow:
+                1px 1px 2px rgba(255,255,255,0.9),
+                0 0 4px rgba(255, 215, 0, 0.8);
+            font-weight: bold;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 215, 0, 0.6);
+        }
+
+        .cell.selected {
+            box-shadow:
+                0 0 25px #ffd700,
+                0 0 50px rgba(255, 215, 0, 0.5),
+                inset 0 0 15px rgba(255, 215, 0, 0.6);
+            transform: scale(1.1);
+            z-index: 20;
+            border-color: #ffd700;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, transparent 100%);
+        }
+
+        .cell.valid-move {
+            background: rgba(76, 175, 80, 0.4) !important;
+            border-color: #4caf50 !important;
+            animation: pulse 1s ease-in-out infinite;
+            position: relative;
+        }
+
+        .cell.valid-move::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(76, 175, 80, 0.6) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            animation: pulseRing 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.8;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes pulseRing {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* 生命值显示 */
+        .health-bar {
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 2px;
+            z-index: 10;
+        }
+
+        .health-point {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #ff0000;
+            border: 1px solid #8b0000;
+        }
+
+        .health-point.white {
+            background: #4169e1;
+            border-color: #1e3a8a;
+        }
+
+        .health-point.lost {
+            background: #555;
+            opacity: 0.4;
+        }
+
+        /* 信息面板 */
+        .info-panel {
+            flex: 0 0 320px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.1),
+                inset 0 1px 3px rgba(0,0,0,0.05);
+            border: 3px solid #e17055;
+        }
+
+        .turn-indicator {
+            font-size: 1.5em;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .turn-indicator.red {
+            background: linear-gradient(135deg, #dc143c 0%, #ff6b6b 100%);
+            color: white;
+        }
+
+        .turn-indicator.white {
+            background: linear-gradient(135deg, #4169e1 0%, #6495ed 100%);
+            color: white;
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow:
+                0 5px 15px rgba(0,0,0,0.2),
+                inset 0 0 10px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.4);
+            padding-bottom: 5px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px;
+            background: #f5f5f5;
+            margin-bottom: 4px;
+            border-radius: 4px;
+            align-items: center;
+            font-size: 0.9em;
+        }
+
+        .health-display {
+            display: flex;
+            gap: 2px;
+            align-items: center;
+        }
+
+        .heart {
+            font-size: 1.1em;
+        }
+
+        .special-ability {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+
+        .ability-status {
+            font-size: 1.3em;
+            margin-top: 4px;
+            font-weight: bold;
+        }
+
+        .ability-ready {
+            animation: glowReady 1.5s infinite;
+        }
+
+        @keyframes glowReady {
+            0%, 100% { text-shadow: 0 0 8px #fff; }
+            50% { text-shadow: 0 0 16px #fff, 0 0 24px #ffd700; }
+        }
+
+        .history-section {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            max-height: 160px;
+            overflow-y: auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-size: 0.85em;
+        }
+
+        .history-item {
+            padding: 4px 6px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #dc143c 0%, #ff6b6b 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(220, 20, 60, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #4169e1 0%, #6495ed 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(65, 105, 225, 0.3);
+        }
+
+        .btn-music {
+            background: linear-gradient(135deg, #ff8c42 0%, #ffa07a 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
+        }
+
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #fff9f0 0%, #fff5e6 100%);
+            padding: 35px;
+            border-radius: 18px;
+            text-align: center;
+            max-width: 580px;
+            border: 4px solid #d4a574;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal h2 {
+            font-size: 2.3em;
+            margin-bottom: 18px;
+        }
+
+        .modal p {
+            margin-bottom: 18px;
+            color: #5a4a3a;
+            line-height: 1.8;
+        }
+
+        .victory-text {
+            background: linear-gradient(45deg, #ffd700, #ff6b35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .defeat-text {
+            color: #8b0000;
+        }
+
+        /* 图例 */
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            margin-top: 12px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            font-size: 0.8em;
+        }
+
+        .legend-title {
+            grid-column: span 2;
+            font-weight: bold;
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .legend-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+        }
+
+        .legend-color {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            box-shadow:
+                0 3px 6px rgba(0,0,0,0.2),
+                inset 0 1px 2px rgba(255,255,255,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .legend-color::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.2) 50%, transparent 60%);
+            animation: legendShine 3s linear infinite;
+        }
+
+        @keyframes legendShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* 战斗动画 */
+        @keyframes battle {
+            0%, 100% {
+                transform: rotate(0deg) scale(1) translateY(0);
+                filter: brightness(1) contrast(1);
+            }
+            25% {
+                transform: rotate(-20deg) scale(1.2) translateY(-5px);
+                filter: brightness(1.5) contrast(1.2) hue-rotate(10deg);
+            }
+            75% {
+                transform: rotate(20deg) scale(1.2) translateY(-5px);
+                filter: brightness(1.5) contrast(1.2) hue-rotate(-10deg);
+            }
+        }
+
+        .battling {
+            animation: battle 0.3s ease-in-out 3, flash 0.3s ease-in-out 3;
+            box-shadow:
+                0 0 30px rgba(255, 0, 0, 0.8),
+                0 0 60px rgba(255, 0, 0, 0.4);
+        }
+
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            padding: 8px;
+            background: white;
+            border-radius: 6px;
+            font-size: 0.85em;
+        }
+
+        .volume-slider {
+            flex: 1;
+            height: 5px;
+            border-radius: 3px;
+            background: #ddd;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* 响应式 */
+        @media (max-width: 1200px) {
+            .game-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .info-panel {
+                flex: none;
+                width: 100%;
+                max-width: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>四渡赤水</h1>
+            <p class="subtitle">红军长征突围战 · 1935年1-3月</p>
+        </header>
+
+        <div class="game-container">
+            <div class="board-wrapper">
+                <div class="map-info">
+                    <span class="map-direction">⬅️ 四川</span>
+                    <span class="map-direction">北 ⬆️</span>
+                    <span class="map-direction">南 ⬇️ 敌军</span>
+                    <span class="map-direction">东 ➡️ 云南</span>
+                </div>
+                <div style="text-align: center; margin-bottom: 10px; font-size: 0.9em; color: #e17055;">
+                    🌊 赤水河 • 渡口通行
+                </div>
+                <div class="board" id="board"></div>
+            </div>
+
+            <div class="info-panel">
+                <div class="turn-indicator red" id="turnIndicator">
+                    🔴 红军回合
+                </div>
+
+                <div class="stats-section">
+                    <div class="section-title">📊 战况</div>
+                    <div class="stat-row">
+                        <span>📅 回合</span>
+                        <span id="turnCount">1</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>📍 位置</span>
+                        <span id="redPosition">遵义</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>❤️ 生命</span>
+                        <div class="health-display" id="redHealth"></div>
+                    </div>
+                </div>
+
+                <div class="special-ability">
+                    <div>⚡ 快速机动</div>
+                    <div class="ability-status" id="abilityStatus">
+                        <span class="ability-ready">✓ 就绪</span>
+                    </div>
+                    <div style="font-size: 0.8em; margin-top: 2px;" id="abilityHint">
+                        2格移动（3回合充能）
+                    </div>
+                </div>
+
+                <div class="stats-section" style="background: linear-gradient(135deg, #ffeaa7, #fab1a0);">
+                    <div class="section-title">🎮 操作</div>
+                    <div style="font-size: 0.85em; line-height: 1.4;">
+                        <div>🖱️ 鼠标移动</div>
+                        <div>⌨️ WASD/方向键</div>
+                        <div>🎯 突围四川</div>
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <div class="section-title">🔵 敌军</div>
+                    <div id="whiteUnits"></div>
+                </div>
+
+                <div class="history-section">
+                    <div class="section-title">📜 战报</div>
+                    <div id="history">
+                        <div class="history-item">🎮 游戏开始</div>
+                    </div>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-title">🗺️ 地形</div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(135deg, #2d8f2d, #1a6b1a);"></div>
+                        <span>四川</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(135deg, #c41e3a, #8b0000);"></div>
+                        <span>云南</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(180deg, #3a7bd5, #5a9be8); border: 3px solid #ffd700;"></div>
+                        <span>⛴️ 渡口</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(180deg, #3a7bd5, #5a9be8);"></div>
+                        <span>河流</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(135deg, #ffd700, #ff9500);"></div>
+                        <span>城镇</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(135deg, #5a4a3a, #7a6a5a);"></div>
+                        <span>⛰️ 山地</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-music" id="musicBtn" onclick="toggleMusic()">🔇 关闭音乐</button>
+
+                <div class="volume-control">
+                    <span>🔊</span>
+                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="60" onchange="changeVolume(this.value)">
+                </div>
+
+                <button class="btn btn-primary" onclick="resetGame()">🔄 重新开始</button>
+                <button class="btn btn-secondary" onclick="showHelp()">📖 规则</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 胜利/失败弹窗 -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">游戏结束</h2>
+            <p id="modalText"></p>
+            <button class="btn btn-primary" onclick="closeModal(); resetGame();">再来一局</button>
+        </div>
+    </div>
+
+    <!-- 规则弹窗 -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content" style="max-width: 680px; max-height: 80vh; overflow-y: auto;">
+            <h2 style="color: #8b0000;">📖 四渡赤水战役规则</h2>
+            <div style="text-align: left; margin: 15px 0; line-height: 1.7; font-size: 0.95em;">
+                <h3 style="color: #dc143c; margin: 12px 0 8px 0;">📜 历史背景</h3>
+                <p>1935年遵义会议后，中央红军3万余人面临国民党军40万重兵围追堵截。毛泽东指挥红军四次渡过赤水河，在敌军重围中巧妙穿插，最终突出重围进入四川，创造了军事史上的奇迹。</p>
+
+                <h3 style="color: #dc143c; margin: 12px 0 8px 0;">🔴 红军（玩家）</h3>
+                <ul style="margin-left: 18px;">
+                    <li><strong>生命值：</strong>3条生命</li>
+                    <li><strong>移动：</strong>每回合可移动1格（上下左右）</li>
+                    <li><strong>快速机动：</strong>每3回合可用一次，移动2格</li>
+                    <li><strong>渡河：</strong>只能从渡口（金色）通过赤水河，不能在河中行走</li>
+                    <li><strong>恢复：</strong>占领重要城镇（金色）可恢复1条生命</li>
+                </ul>
+
+                <h3 style="color: #4169e1; margin: 12px 0 8px 0;">🔵 白军（电脑AI）</h3>
+                <ul style="margin-left: 18px;">
+                    <li><strong>川军：</strong>2个师团，防守四川边界</li>
+                    <li><strong>黔军：</strong>2个师团，防守贵州地区</li>
+                    <li><strong>中央军：</strong>3个师团，围剿红军主力</li>
+                    <li><strong>移动：</strong>每回合每个单位移动1格</li>
+                    <li><strong>AI：</strong>智能追踪红军，协同包围</li>
+                </ul>
+
+                <h3 style="color: #ff6b35; margin: 12px 0 8px 0;">⚔️ 战斗系统</h3>
+                <ul style="margin-left: 18px;">
+                    <li><strong>遭遇战：</strong>红军与白军相遇时触发</li>
+                    <li><strong>损失：</strong>双方各损失1条生命</li>
+                    <li><strong>消灭：</strong>生命归零的单位消失</li>
+                </ul>
+
+                <h3 style="color: #32cd32; margin: 12px 0 8px 0;">🏆 胜利条件</h3>
+                <ul style="margin-left: 18px;">
+                    <li><strong>红军胜利：</strong>突破重围，到达四川边界（绿色）</li>
+                    <li><strong>白军胜利：</strong>消灭红军或将其完全包围</li>
+                </ul>
+
+                <h3 style="color: #8b4513; margin: 12px 0 8px 0;">💡 策略提示</h3>
+                <ul style="margin-left: 18px;">
+                    <li>地形复杂，需要多次渡河才能突围</li>
+                    <li>重要城镇可恢复生命，注意防守</li>
+                    <li>山地地形可阻挡追兵</li>
+                    <li>保存实力，避免不必要的战斗</li>
+                </ul>
+
+                <h3 style="color: #d4a574; margin: 12px 0 8px 0;">🏰 重要地点</h3>
+                <ul style="margin-left: 18px; font-size: 0.9em;">
+                    <li><strong>遵义：</strong>红军出发点，历史转折点</li>
+                    <li><strong>赤水河：</strong>南北流向，多次渡河的战略要道</li>
+                    <li><strong>茅台/太平渡/二郎滩：</strong>重要渡口</li>
+                    <li><strong>土城：</strong>一渡赤水前的激战地</li>
+                    <li><strong>扎西：</strong>一渡后的集结地</li>
+                </ul>
+            </div>
+            <button class="btn btn-secondary" onclick="closeHelp()">关闭</button>
+        </div>
+    </div>
+
+    <script>
+        // ==================== 音效系统 ====================
+        class SoundSystem {
+            constructor() {
+                this.audioContext = null;
+                this.isMusicPlaying = true; // 默认开启
+                this.musicTimeout = null;
+                this.volume = 0.6;
+                this.isMuted = false;
+                this.isPlayingMelody = false;
+                this.backgroundAudio = null;
+                this.audioElement = null;
+                this.masterGainNode = null;
+            }
+
+            init() {
+                if (!this.audioContext) {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    // 创建主增益节点用于音量控制
+                    this.masterGainNode = this.audioContext.createGain();
+                    this.masterGainNode.connect(this.audioContext.destination);
+                    this.masterGainNode.gain.value = this.volume;
+                }
+                // 加载背景音乐
+                this.loadBackgroundMusic();
+            }
+
+            // 加载背景音乐文件
+            loadBackgroundMusic() {
+                if (this.audioElement) {
+                    this.audioElement.pause();
+                    this.audioElement = null;
+                }
+
+                this.audioElement = new Audio('/Users/yinyang/Desktop/关羽之歌.mp3');
+                this.audioElement.loop = true;
+                this.audioElement.volume = this.volume;
+                this.audioElement.muted = this.isMuted;
+
+                // 设置错误处理
+                this.audioElement.addEventListener('error', () => {
+                    console.log('无法加载音频文件，回退到合成音效');
+                    this.audioElement = null;
+                });
+            }
+
+            setVolume(vol) {
+                this.volume = vol;
+                if (this.audioElement) {
+                    this.audioElement.volume = vol;
+                }
+                // 更新主增益节点的音量
+                if (this.masterGainNode) {
+                    this.masterGainNode.gain.value = vol;
+                }
+            }
+
+            // 生成音符（特效音）
+            playNote(frequency, duration, type = 'sine', vol = this.volume) {
+                if (!this.audioContext || this.isMuted || frequency <= 0) return;
+
+                try {
+                    // 使用独立的音频节点，不影响背景音乐
+                    const oscillator = this.audioContext.createOscillator();
+                    const gainNode = this.audioContext.createGain();
+
+                    oscillator.connect(gainNode);
+                    gainNode.connect(this.masterGainNode || this.audioContext.destination);
+
+                    oscillator.type = type;
+                    oscillator.frequency.value = frequency;
+
+                    const startTime = this.audioContext.currentTime;
+                    // 音效使用较低的音量，避免覆盖背景音乐
+                    gainNode.gain.setValueAtTime(vol * 0.2, startTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+
+                    oscillator.start(startTime);
+                    oscillator.stop(startTime + duration);
+                } catch(e) {
+                    console.log('音效播放失败:', e);
+                }
+            }
+
+            // 移动音效
+            playMove() {
+                this.init();
+                this.playNote(587, 0.08, 'sine', this.volume);
+            }
+
+            // 战斗音效
+            playBattle() {
+                this.init();
+                this.playNote(196, 0.12, 'sawtooth', this.volume);
+                setTimeout(() => this.playNote(165, 0.15, 'sawtooth', this.volume), 80);
+            }
+
+            // 胜利音效 - 激昂
+            playVictory() {
+                this.init();
+                // 《义勇军进行曲》开头旋律 - 激昂
+                const melody = [
+                    { note: 392, dur: 0.2 },   // G
+                    { note: 392, dur: 0.15 },  // G
+                    { note: 440, dur: 0.15 },  // A
+                    { note: 494, dur: 0.3 },   // B
+                    { note: 440, dur: 0.15 },  // A
+                    { note: 392, dur: 0.15 },  // G
+                    { note: 349, dur: 0.3 },   // F
+                    { note: 392, dur: 0.4 },   // G
+                    { note: 523, dur: 0.5 },   // C高音
+                    { note: 494, dur: 0.15 },  // B
+                    { note: 440, dur: 0.15 },  // A
+                    { note: 392, dur: 0.5 },   // G
+                ];
+                let t = 0;
+                melody.forEach(item => {
+                    setTimeout(() => this.playNote(item.note, item.dur * 0.9, 'sine', this.volume * 1.2), t);
+                    t += item.dur * 200;
+                });
+            }
+
+            // 失败音效
+            playDefeat() {
+                this.init();
+                const melody = [349, 294, 262, 196];
+                melody.forEach((note, i) => {
+                    setTimeout(() => this.playNote(note, 0.35, 'sine', this.volume), i * 220);
+                });
+            }
+
+            // 恢复生命音效
+            playHeal() {
+                this.init();
+                this.playNote(659, 0.12, 'sine', this.volume);
+                setTimeout(() => this.playNote(784, 0.18, 'sine', this.volume), 120);
+            }
+
+             // 播放背景音乐
+            playBackgroundMusic() {
+                this.init();
+
+                // 优先使用HTML5 Audio播放音乐文件
+                if (this.audioElement) {
+                    this.audioElement.play().catch(() => {
+                        console.log('音频文件播放失败，使用合成音效');
+                        this.startSyntheticMusic();
+                    });
+                } else {
+                    // 没有音频文件，使用合成音效
+                    this.startSyntheticMusic();
+                }
+
+                // 确保音乐持续播放的定时器
+                this.ensureMusicContinues();
+            }
+
+            // 启动合成音效背景音乐
+            startSyntheticMusic() {
+                if (!this.isMusicPlaying || this.isPlayingMelody) return;
+                this.isPlayingMelody = true;
+
+                this.playMelodyLoop();
+            }
+
+            // 循环播放旋律
+            playMelodyLoop() {
+                if (!this.isMusicPlaying) {
+                    this.isPlayingMelody = false;
+                    return;
+                }
+
+                // 使用Web Audio API创建独立的背景音乐
+                this.createBackgroundMelody();
+
+                // 8秒后再次播放
+                this.musicTimeout = setTimeout(() => {
+                    this.playMelodyLoop();
+                }, 8000);
+            }
+
+            // 创建背景旋律
+            createBackgroundMelody() {
+                if (!this.audioContext || this.isMuted) return;
+
+                // 创建简单的和弦背景
+                const chords = [
+                    [330, 440, 550], // C大调和弦
+                    [330, 440, 550],
+                    [294, 370, 440], // G大调和弦
+                    [294, 370, 440]
+                ];
+
+                let chordIndex = 0;
+
+                chords.forEach((chord, index) => {
+                    chord.forEach((note, noteIndex) => {
+                        setTimeout(() => {
+                            if (this.isMusicPlaying && !this.isMuted) {
+                                const oscillator = this.audioContext.createOscillator();
+                                const gainNode = this.audioContext.createGain();
+
+                                oscillator.connect(gainNode);
+                                gainNode.connect(this.masterGainNode || this.audioContext.destination);
+
+                                oscillator.type = 'sine';
+                                oscillator.frequency.value = note;
+
+                                const startTime = this.audioContext.currentTime;
+                                gainNode.gain.setValueAtTime(0, startTime);
+                                gainNode.gain.linearRampToValueAtTime(0.05, startTime + 0.01);
+                                gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + 1.5);
+
+                                oscillator.start(startTime);
+                                oscillator.stop(startTime + 1.5);
+                            }
+                        }, index * 2000 + noteIndex * 200);
+                    });
+                });
+            }
+
+            // 确保音乐持续播放
+            ensureMusicContinues() {
+                if (this.isMusicPlaying && !this.musicTimeout) {
+                    this.musicTimeout = setTimeout(() => {
+                        this.ensureMusicContinues();
+                        this.playBackgroundMusic();
+                    }, 10000);
+                }
+            }
+
+            toggleMusic() {
+                this.init();
+
+                if (this.isMusicPlaying) {
+                    this.isMusicPlaying = false;
+                    this.isPlayingMelody = false;
+                    if (this.musicTimeout) {
+                        clearTimeout(this.musicTimeout);
+                        this.musicTimeout = null;
+                    }
+                    if (this.audioElement) {
+                        this.audioElement.pause();
+                    }
+                    document.getElementById('musicBtn').textContent = '🎵 开启音乐';
+                } else {
+                    this.isMusicPlaying = true;
+                    this.playBackgroundMusic();
+                    document.getElementById('musicBtn').textContent = '🔇 关闭音乐';
+                }
+
+                return this.isMusicPlaying;
+            }
+        }
+
+        const soundSystem = new SoundSystem();
+
+        // ==================== 游戏核心 ====================
+        const BOARD_SIZE = 13;
+
+        // 地形类型
+        const TERRAIN = {
+            NORMAL: 'normal',
+            MOUNTAIN: 'mountain',
+            RIVER: 'river',
+            FORD: 'ford',
+            TOWN: 'town',
+            IMPORTANT_TOWN: 'important-town',
+            VICTORY_SICHUAN: 'victory-sichuan',
+            VICTORY_YUNNAN: 'victory-yunnan'
+        };
+
+        // 重要地点名称 - 基于真实地图
+        const LOCATIONS = {
+            // 胜利区域
+            '0,3': '四川', '0,4': '四川', '0,5': '四川', '0,6': '四川', '0,7': '四川',
+            '12,0': '云南', '12,1': '云南', '12,2': '云南', '12,3': '云南', '12,4': '云南',
+
+            // 重要城镇
+            '7,11': '遵义',      // 起点
+            '4,7': '土城',       // 一渡前激战地
+            '6,5': '茅台',       // 一渡、三渡
+            '3,4': '太平渡',     // 二渡、四渡
+            '4,4': '二郎滩',     // 二渡、四渡
+            '2,6': '扎西',       // 一渡后集结地
+
+            // 其他城镇
+            '9,9': '桐梓',
+            '8,7': '仁怀',
+            '5,9': '鸭溪',
+            '10,8': '娄山关',
+        };
+
+        // 游戏状态
+        let gameState = {
+            turn: 1,
+            isPlayerTurn: true,
+            redArmy: { x: 7, y: 11, health: 4, maxHealth: 4 },
+            whiteArmy: [
+                // 四川区域 - 2个师（防守四川）
+                { x: 1, y: 5, id: 1, health: 2, maxHealth: 2, name: '川军第一师' },
+                { x: 2, y: 5, id: 2, health: 2, maxHealth: 2, name: '川军第二师' },
+
+                // 贵州区域 - 2个师（防守贵州）
+                { x: 5, y: 8, id: 3, health: 2, maxHealth: 2, name: '黔军第一师' },
+                { x: 6, y: 9, id: 4, health: 2, maxHealth: 2, name: '黔军第二师' },
+
+                // 遵义附近 - 3个师（围剿红军）
+                { x: 7, y: 9, id: 5, health: 2, maxHealth: 2, name: '中央军第一师' },
+                { x: 6, y: 11, id: 6, health: 2, maxHealth: 2, name: '中央军第二师' },
+                { x: 8, y: 10, id: 7, health: 2, maxHealth: 2, name: '中央军第三师' }
+            ],
+            selectedCell: null,
+            specialAbilityCooldown: 0,
+            gameOver: false,
+            board: [],
+            visitedTowns: new Set()
+        };
+
+        // 初始化棋盘 - 基于真实地理
+        function initBoard() {
+            gameState.board = [];
+
+            for (let y = 0; y < BOARD_SIZE; y++) {
+                gameState.board[y] = [];
+                for (let x = 0; x < BOARD_SIZE; x++) {
+                    let terrain = TERRAIN.NORMAL;
+
+                    // 四川边界（西侧）
+                    if (x === 0 && y >= 3 && y <= 7) {
+                        terrain = TERRAIN.VICTORY_SICHUAN;
+                    }
+                    // 云南边界（东侧）
+                    else if (x === 12 && y >= 0 && y <= 4) {
+                        terrain = TERRAIN.VICTORY_YUNNAN;
+                    }
+                    // 重要城镇
+                    else if (['7,11', '4,7', '6,5', '2,6'].includes(`${x},${y}`)) {
+                        terrain = TERRAIN.IMPORTANT_TOWN;
+                    }
+                    // 普通城镇
+                    else if (['9,9', '8,7', '5,9', '10,8'].includes(`${x},${y}`)) {
+                        terrain = TERRAIN.TOWN;
+                    }
+                    // 渡口 - 沿赤水河
+                    else if (['3,4', '4,4', '6,5'].includes(`${x},${y}`)) {
+                        terrain = TERRAIN.FORD;
+                    }
+                    // 赤水河 - 从北向南流，略呈S形
+                    // 北段
+                    else if (y === 2 && x >= 3 && x <= 7) {
+                        terrain = TERRAIN.RIVER;
+                    }
+                    else if (y === 3 && x >= 3 && x <= 6) {
+                        terrain = TERRAIN.RIVER;
+                    }
+                    else if (y === 4 && x >= 3 && x <= 5) {
+                        terrain = TERRAIN.RIVER;
+                    }
+                    // 中段
+                    else if (y === 5 && x >= 4 && x <= 6) {
+                        terrain = TERRAIN.RIVER;
+                    }
+                    else if (y === 6 && x >= 4 && x <= 7) {
+                        terrain = TERRAIN.RIVER;
+                    }
+                    // 南段
+                    else if (y === 7 && x >= 5 && x <= 8) {
+                        terrain = TERRAIN.RIVER;
+                    }
+                    else if (y === 8 && x >= 6 && x <= 8) {
+                        terrain = TERRAIN.RIVER;
+                    }
+                    // 山地 - 四周环山，但留出云南通道
+                    else if (
+                        (x === 0 && y === 0) ||
+                        (x === 1 && y === 0) ||
+                        (x === 0 && y === 1) ||
+                        (x === 1 && y === 1) ||
+                        (x === 0 && y === 2) ||
+                        (x === 0 && y >= 8 && y <= 12) ||
+                        (x === 1 && y >= 9 && y <= 12) ||
+                        (x === 11 && y === 0) ||
+                        (x === 12 && y === 0) ||
+                        (x === 12 && y === 1) ||
+                        (x === 11 && y === 1) ||
+                        (x === 12 && y >= 5 && y <= 12) ||
+                        (x === 11 && y >= 6 && y <= 12) ||
+                        (x === 11 && y >= 9 && y <= 12) ||
+                        (x === 10 && y === 0) ||
+                        (x === 10 && y === 1) ||
+                        (x >= 0 && x <= 2 && y === 12) ||
+                        (x >= 10 && x <= 12 && y === 12) ||
+                        (x === 0 && y === 10) ||
+                        (x === 0 && y === 11) ||
+                        (x === 12 && y === 9) ||
+                        (x === 12 && y === 10) ||
+                        (x === 12 && y === 11)
+                    ) {
+                        terrain = TERRAIN.MOUNTAIN;
+                    }
+
+                    gameState.board[y][x] = { terrain };
+                }
+            }
+        }
+
+        // 渲染棋盘
+        function renderBoard() {
+            const boardEl = document.getElementById('board');
+            boardEl.innerHTML = '';
+
+            for (let y = 0; y < BOARD_SIZE; y++) {
+                for (let x = 0; x < BOARD_SIZE; x++) {
+                    const cell = document.createElement('div');
+                    cell.className = `cell ${gameState.board[y][x].terrain}`;
+                    cell.dataset.x = x;
+                    cell.dataset.y = y;
+
+                    // 地点名称
+                    const locName = LOCATIONS[`${x},${y}`];
+                    if (locName) {
+                        const nameEl = document.createElement('span');
+                        nameEl.className = 'location-name';
+                        nameEl.textContent = locName;
+                        cell.appendChild(nameEl);
+                    }
+
+                    // 红军
+                    if (gameState.redArmy.x === x && gameState.redArmy.y === y) {
+                        const healthBar = document.createElement('div');
+                        healthBar.className = 'health-bar';
+                        for (let i = 0; i < gameState.redArmy.maxHealth; i++) {
+                            const hp = document.createElement('div');
+                            hp.className = `health-point ${i < gameState.redArmy.health ? '' : 'lost'}`;
+                            healthBar.appendChild(hp);
+                        }
+                        cell.appendChild(healthBar);
+
+                        const unit = document.createElement('span');
+                        unit.className = 'unit red-army';
+                        unit.textContent = '🔴';
+                        cell.appendChild(unit);
+                    }
+
+                    // 白军
+                    gameState.whiteArmy.forEach(white => {
+                        if (white.x === x && white.y === y) {
+                            const healthBar = document.createElement('div');
+                            healthBar.className = 'health-bar';
+                            for (let i = 0; i < white.maxHealth; i++) {
+                                const hp = document.createElement('div');
+                                hp.className = `health-point white ${i < white.health ? '' : 'lost'}`;
+                                healthBar.appendChild(hp);
+                            }
+                            cell.appendChild(healthBar);
+
+                            const unit = document.createElement('span');
+                            unit.className = 'unit white-army';
+                            unit.textContent = '🔵';
+                            cell.appendChild(unit);
+                        }
+                    });
+
+                    // 选中状态
+                    if (gameState.selectedCell &&
+                        gameState.selectedCell.x === x &&
+                        gameState.selectedCell.y === y) {
+                        cell.classList.add('selected');
+                    }
+
+                    // 可移动位置
+                    if (gameState.isPlayerTurn && !gameState.gameOver && gameState.selectedCell) {
+                        if (canMoveTo(x, y)) {
+                            cell.classList.add('valid-move');
+                        }
+                    }
+
+                    cell.addEventListener('click', () => handleCellClick(x, y));
+                    boardEl.appendChild(cell);
+                }
+            }
+        }
+
+        // 检查是否可移动
+        function canMoveTo(x, y) {
+            if (!gameState.isPlayerTurn || gameState.gameOver) return false;
+
+            const redX = gameState.redArmy.x;
+            const redY = gameState.redArmy.y;
+
+            if (x === redX && y === redY) return false;
+
+            const distance = Math.abs(x - redX) + Math.abs(y - redY);
+            const maxDistance = gameState.specialAbilityCooldown === 0 ? 2 : 1;
+
+            if (distance > maxDistance) return false;
+
+            const terrain = gameState.board[y][x].terrain;
+            if (terrain === TERRAIN.MOUNTAIN) return false;
+
+            // 如果是河流，只有渡口可以经过
+            if (terrain === TERRAIN.RIVER) {
+                return false; // 河流不能直接进入，需要通过渡口
+            }
+
+            // 检查路径
+            if (distance === 2) {
+                if (Math.abs(x - redX) === 1 && Math.abs(y - redY) === 1) {
+                    // 斜向移动需要检查中间两个格子
+                    const mid1X = redX;
+                    const mid1Y = y;
+                    const mid2X = x;
+                    const mid2Y = redY;
+
+                    const mid1Terrain = gameState.board[mid1Y][mid1X].terrain;
+                    const mid2Terrain = gameState.board[mid2Y][mid2X].terrain;
+
+                    if (mid1Terrain === TERRAIN.MOUNTAIN || mid1Terrain === TERRAIN.RIVER ||
+                        mid2Terrain === TERRAIN.MOUNTAIN || mid2Terrain === TERRAIN.RIVER) {
+                        return false;
+                    }
+                } else {
+                    let midX = redX;
+                    let midY = redY;
+                    if (Math.abs(x - redX) === 2) {
+                        midX = redX + (x > redX ? 1 : -1);
+                    } else {
+                        midY = redY + (y > redY ? 1 : -1);
+                    }
+
+                    const midTerrain = gameState.board[midY][midX].terrain;
+                    if (midTerrain === TERRAIN.MOUNTAIN || midTerrain === TERRAIN.RIVER) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        // 处理点击
+        function handleCellClick(x, y) {
+            if (!gameState.isPlayerTurn || gameState.gameOver) return;
+
+            if (gameState.redArmy.x === x && gameState.redArmy.y === y) {
+                gameState.selectedCell = { x, y };
+                soundSystem.playMove();
+                renderBoard();
+                return;
+            }
+
+            if (gameState.selectedCell && canMoveTo(x, y)) {
+                moveRedArmy(x, y);
+            }
+        }
+
+        // 移动红军
+        function moveRedArmy(x, y) {
+            const distance = Math.abs(x - gameState.redArmy.x) + Math.abs(y - gameState.redArmy.y);
+            const useAbility = distance === 2;
+
+            const fromLoc = LOCATIONS[`${gameState.redArmy.x},${gameState.redArmy.y}`] || `(${gameState.redArmy.x},${gameState.redArmy.y})`;
+            const toLoc = LOCATIONS[`${x},${y}`] || `(${x},${y})`;
+
+            gameState.redArmy.x = x;
+            gameState.redArmy.y = y;
+
+            soundSystem.playMove();
+
+            if (useAbility) {
+                gameState.specialAbilityCooldown = 3;
+                addHistory(`⚡ 快速机动: ${fromLoc} → ${toLoc}`);
+            } else {
+                addHistory(`🔴 红军: ${fromLoc} → ${toLoc}`);
+            }
+
+            // 检查重要地点恢复
+            const terrain = gameState.board[y][x].terrain;
+            const locKey = `${x},${y}`;
+            if (terrain === TERRAIN.IMPORTANT_TOWN && !gameState.visitedTowns.has(locKey)) {
+                if (gameState.redArmy.health < gameState.redArmy.maxHealth) {
+                    gameState.redArmy.health++;
+                    gameState.visitedTowns.add(locKey);
+                    soundSystem.playHeal();
+                    addHistory(`💚 在${LOCATIONS[locKey]}休整，恢复生命！`);
+                }
+            }
+
+            gameState.selectedCell = null;
+
+            // 检查战斗
+            const battleResult = checkBattle();
+            if (battleResult) {
+                renderBoard();
+                return;
+            }
+
+            // 检查胜利
+            if (checkVictory()) {
+                return;
+            }
+
+            gameState.isPlayerTurn = false;
+            updateUI();
+            renderBoard();
+
+            setTimeout(whiteArmyTurn, 700);
+        }
+
+        // 检查战斗
+        function checkBattle() {
+            const { x, y } = gameState.redArmy;
+            const battleUnits = gameState.whiteArmy.filter(w => w.x === x && w.y === y);
+
+            if (battleUnits.length > 0) {
+                battleUnits.forEach(white => {
+                    gameState.redArmy.health--;
+                    white.health--;
+                    soundSystem.playBattle();
+                    addHistory(`⚔️ 与${white.name}遭遇战！各损1命`);
+
+                    const cells = document.querySelectorAll('.cell');
+                    cells.forEach(cell => {
+                        const cx = parseInt(cell.dataset.x);
+                        const cy = parseInt(cell.dataset.y);
+                        if (cx === x && cy === y) {
+                            cell.classList.add('battling');
+                        }
+                    });
+                });
+
+                gameState.whiteArmy = gameState.whiteArmy.filter(w => w.health > 0);
+
+                if (gameState.redArmy.health <= 0) {
+                    gameState.gameOver = true;
+                    setTimeout(() => {
+                        soundSystem.playDefeat();
+                        showModal('💪 英勇不屈', '红军虽败犹荣！\n\n每一次战斗都是胜利的积累，每一次尝试都让我们更接近成功。\n\n毛泽东曾说："星星之火，可以燎原"。让我们重整旗鼓，再创辉煌！', false);
+                    }, 400);
+                    return true;
+                }
+
+                updateUI();
+                renderBoard();
+                return true;
+            }
+
+            return false;
+        }
+
+        // 白军AI
+        function whiteArmyTurn() {
+            if (gameState.gameOver) return;
+
+            addHistory(`--- 第 ${gameState.turn} 回合 ---`);
+
+            gameState.whiteArmy.forEach((white) => {
+                const move = findBestMove(white);
+                if (move) {
+                    white.x = move.x;
+                    white.y = move.y;
+
+                    if (white.x === gameState.redArmy.x && white.y === gameState.redArmy.y) {
+                        gameState.redArmy.health--;
+                        white.health--;
+                        soundSystem.playBattle();
+                        addHistory(`⚔️ ${white.name}追击红军，遭遇战！`);
+                    }
+                }
+            });
+
+            const beforeCount = gameState.whiteArmy.length;
+            gameState.whiteArmy = gameState.whiteArmy.filter(w => w.health > 0);
+            if (gameState.whiteArmy.length < beforeCount) {
+                addHistory(`💥 白军一个师团被消灭！`);
+            }
+
+            if (gameState.redArmy.health <= 0) {
+                gameState.gameOver = true;
+                setTimeout(() => {
+                    soundSystem.playDefeat();
+                    showModal('🌟 英雄本色', '红军展现了非凡的勇气！\n\n即使身处绝境，依然斗志昂扬。革命道路充满艰险，但每一次跌倒都是为了更好地站起来。\n\n让我们总结经验，卷土重来，胜利终将属于不屈的战士！', false);
+                }, 400);
+                return;
+            }
+
+            if (checkEncirclement()) {
+                return;
+            }
+
+            gameState.turn++;
+            gameState.isPlayerTurn = true;
+
+            if (gameState.specialAbilityCooldown > 0) {
+                gameState.specialAbilityCooldown--;
+            }
+
+            updateUI();
+            renderBoard();
+        }
+
+        // AI寻找最佳移动
+        function findBestMove(white) {
+            const moves = [];
+            const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+
+            directions.forEach(([dx, dy]) => {
+                const newX = white.x + dx;
+                const newY = white.y + dy;
+
+                if (newX >= 0 && newX < BOARD_SIZE && newY >= 0 && newY < BOARD_SIZE) {
+                    const terrain = gameState.board[newY][newX].terrain;
+
+                    if (terrain !== TERRAIN.MOUNTAIN && terrain !== TERRAIN.RIVER) {
+                        const hasOtherWhite = gameState.whiteArmy.some(w =>
+                            w !== white && w.x === newX && w.y === newY
+                        );
+
+                        if (!hasOtherWhite) {
+                            const dist = Math.abs(newX - gameState.redArmy.x) + Math.abs(newY - gameState.redArmy.y);
+                            moves.push({ x: newX, y: newY, distance: dist });
+                        }
+                    }
+                }
+            });
+
+            if (moves.length > 0) {
+                moves.sort((a, b) => a.distance - b.distance);
+
+                if (moves.length > 1 && Math.random() < 0.25) {
+                    return moves[1];
+                }
+                return moves[0];
+            }
+
+            return null;
+        }
+
+        // 检查胜利
+        function checkVictory() {
+            const terrain = gameState.board[gameState.redArmy.y][gameState.redArmy.x].terrain;
+            const redX = gameState.redArmy.x;
+            const redY = gameState.redArmy.y;
+
+            if (terrain === TERRAIN.VICTORY_SICHUAN) {
+                gameState.gameOver = true;
+                setTimeout(() => {
+                    soundSystem.playVictory();
+                    showModal(
+                        '🎉 红军胜利！',
+                        `红军成功突围进入四川！\n\n正如历史上的四渡赤水战役，红军通过灵活机动的战略战术，成功突破了白军的重重包围，创造了军事史上的奇迹！\n\n用时：${gameState.turn}回合`,
+                        true
+                    );
+                }, 400);
+                return true;
+            } else if (terrain === TERRAIN.VICTORY_YUNNAN) {
+                gameState.gameOver = true;
+                setTimeout(() => {
+                    soundSystem.playVictory();
+                    showModal(
+                        '🎉 红军胜利！',
+                        `红军成功进入云南！\n\n虽然原计划是进入四川，但红军的灵活机动再次展现了非凡的智慧。在中国革命的道路上，每一步都是胜利！\n\n用时：${gameState.turn}回合`,
+                        true
+                    );
+                }, 400);
+                return true;
+            }
+            return false;
+        }
+
+        // 检查包围
+        function checkEncirclement() {
+            const { x, y } = gameState.redArmy;
+            const directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+
+            let blocked = 0;
+            let totalDirs = 0;
+
+            directions.forEach(([dx, dy]) => {
+                const newX = x + dx;
+                const newY = y + dy;
+
+                if (newX >= 0 && newX < BOARD_SIZE && newY >= 0 && newY < BOARD_SIZE) {
+                    totalDirs++;
+                    const terrain = gameState.board[newY][newX].terrain;
+                    const hasWhite = gameState.whiteArmy.some(w => w.x === newX && w.y === newY);
+
+                    if (terrain === TERRAIN.MOUNTAIN || terrain === TERRAIN.RIVER || hasWhite) {
+                        blocked++;
+                    }
+                }
+            });
+
+            if (blocked === totalDirs && totalDirs > 0) {
+                gameState.gameOver = true;
+                setTimeout(() => {
+                    soundSystem.playDefeat();
+                    showModal('🎭 诱敌深入', '战术性转移！\n\n虽然这次暂时被围，但正是四渡赤水的精髓所在。历史上的红军通过灵活机动，最终成功突破重围。\n\n让我们汲取经验，运用智慧，在下局中创造奇迹！', false);
+                }, 400);
+                return true;
+            }
+
+            return false;
+        }
+
+        // 更新UI
+        function updateUI() {
+            const turnIndicator = document.getElementById('turnIndicator');
+            turnIndicator.className = `turn-indicator ${gameState.isPlayerTurn ? 'red' : 'white'}`;
+            turnIndicator.textContent = gameState.isPlayerTurn ? '🔴 红军回合' : '🔵 白军回合';
+
+            document.getElementById('turnCount').textContent = gameState.turn;
+
+            const redLoc = LOCATIONS[`${gameState.redArmy.x},${gameState.redArmy.y}`] || `(${gameState.redArmy.x}, ${gameState.redArmy.y})`;
+            document.getElementById('redPosition').textContent = redLoc;
+
+            const redHealthEl = document.getElementById('redHealth');
+            redHealthEl.innerHTML = '';
+            for (let i = 0; i < gameState.redArmy.maxHealth; i++) {
+                const heart = document.createElement('span');
+                heart.className = `heart ${i < gameState.redArmy.health ? '' : 'lost'}`;
+                heart.textContent = '❤️';
+                redHealthEl.appendChild(heart);
+            }
+
+            const whiteUnitsEl = document.getElementById('whiteUnits');
+            whiteUnitsEl.innerHTML = '';
+            gameState.whiteArmy.forEach(white => {
+                const row = document.createElement('div');
+                row.className = 'stat-row';
+
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = white.name;
+
+                const healthDiv = document.createElement('div');
+                healthDiv.className = 'health-display';
+                for (let i = 0; i < white.maxHealth; i++) {
+                    const heart = document.createElement('span');
+                    heart.className = `heart blue ${i < white.health ? '' : 'lost'}`;
+                    heart.textContent = '💙';
+                    healthDiv.appendChild(heart);
+                }
+
+                row.appendChild(nameSpan);
+                row.appendChild(healthDiv);
+                whiteUnitsEl.appendChild(row);
+            });
+
+            const abilityStatus = document.getElementById('abilityStatus');
+            const abilityHint = document.getElementById('abilityHint');
+
+            if (gameState.specialAbilityCooldown === 0) {
+                abilityStatus.innerHTML = '<span class="ability-ready">✓ 就绪</span>';
+                abilityHint.textContent = '可移动2格（每3回合充能）';
+            } else {
+                abilityStatus.innerHTML = `<span style="color: #ffcccb;">${gameState.specialAbilityCooldown}回合后可用</span>`;
+                abilityHint.textContent = '快速机动充能中...';
+            }
+        }
+
+        function addHistory(text) {
+            const history = document.getElementById('history');
+            const item = document.createElement('div');
+            item.className = 'history-item';
+            item.textContent = text;
+            history.appendChild(item);
+            history.scrollTop = history.scrollHeight;
+        }
+
+        function showModal(title, text, isVictory) {
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalText = document.getElementById('modalText');
+
+            modalTitle.textContent = title;
+            modalTitle.className = isVictory ? 'victory-text' : 'defeat-text';
+            modalText.innerHTML = text.replace(/\n/g, '<br>');
+
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function showHelp() {
+            document.getElementById('helpModal').classList.add('active');
+        }
+
+        function closeHelp() {
+            document.getElementById('helpModal').classList.remove('active');
+        }
+
+        function toggleMusic() {
+            soundSystem.toggleMusic();
+        }
+
+        function changeVolume(value) {
+            soundSystem.setVolume(value / 100);
+        }
+
+        function resetGame() {
+            gameState = {
+                turn: 1,
+                isPlayerTurn: true,
+                redArmy: { x: 7, y: 11, health: 4, maxHealth: 4 },
+                whiteArmy: [
+                    // 四川区域 - 2个师（防守四川）
+                    { x: 1, y: 5, id: 1, health: 2, maxHealth: 2, name: '川军第一师' },
+                    { x: 2, y: 5, id: 2, health: 2, maxHealth: 2, name: '川军第二师' },
+
+                    // 贵州区域 - 2个师（防守贵州）
+                    { x: 5, y: 8, id: 3, health: 2, maxHealth: 2, name: '黔军第一师' },
+                    { x: 6, y: 9, id: 4, health: 2, maxHealth: 2, name: '黔军第二师' },
+
+                    // 遵义附近 - 3个师（围剿红军）
+                    { x: 7, y: 9, id: 5, health: 2, maxHealth: 2, name: '中央军第一师' },
+                    { x: 6, y: 11, id: 6, health: 2, maxHealth: 2, name: '中央军第二师' },
+                    { x: 8, y: 10, id: 7, health: 2, maxHealth: 2, name: '中央军第三师' }
+                ],
+                selectedCell: null,
+                specialAbilityCooldown: 0,
+                gameOver: false,
+                board: [],
+                visitedTowns: new Set()
+            };
+
+            initBoard();
+            renderBoard();
+            updateUI();
+
+            document.getElementById('history').innerHTML = '<div class="history-item">🎮 游戏开始！红军驻扎遵义</div>';
+        }
+
+        // 初始化
+        initBoard();
+        renderBoard();
+        updateUI();
+
+        // 首次点击激活音频并开启音乐
+        document.body.addEventListener('click', function initAudioOnce() {
+            soundSystem.init();
+            if (soundSystem.isMusicPlaying && !soundSystem.isPlayingMelody) {
+                soundSystem.playBackgroundMusic();
+            }
+            document.body.removeEventListener('click', initAudioOnce);
+        }, { once: true });
+
+        // 键盘控制
+        document.addEventListener('keydown', function handleKeyboard(event) {
+            if (!gameState.isPlayerTurn || gameState.gameOver) return;
+
+            const redX = gameState.redArmy.x;
+            const redY = gameState.redArmy.y;
+            let newX = redX;
+            let newY = redY;
+
+            // 方向键和WASD控制
+            switch(event.key.toLowerCase()) {
+                case 'arrowup':
+                case 'w':
+                    newY = Math.max(0, redY - 1);
+                    break;
+                case 'arrowdown':
+                case 's':
+                    newY = Math.min(BOARD_SIZE - 1, redY + 1);
+                    break;
+                case 'arrowleft':
+                case 'a':
+                    newX = Math.max(0, redX - 1);
+                    break;
+                case 'arrowright':
+                case 'd':
+                    newX = Math.min(BOARD_SIZE - 1, redX + 1);
+                    break;
+                default:
+                    return; // 不是控制键，忽略
+            }
+
+            event.preventDefault(); // 防止页面滚动
+
+            // 检查是否可以移动到新位置
+            if (newX !== redX || newY !== redY) {
+                if (canMoveTo(newX, newY)) {
+                    moveRedArmy(newX, newY);
+                } else {
+                    // 无效移动，播放提示音
+                    soundSystem.playNote(200, 0.1, 'sawtooth', 0.3);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
